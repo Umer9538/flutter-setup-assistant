@@ -1,0 +1,61 @@
+name: Release builds
+
+# Builds the macOS and Windows apps and attaches them to the GitHub Release
+# for the pushed tag (e.g. v0.1.0). Run manually from the Actions tab too.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build macos --release
+      - name: Zip app bundle
+        run: |
+          cd "build/macos/Build/Products/Release"
+          ditto -c -k --keepParent "Flutter Setup Assistant.app" "$GITHUB_WORKSPACE/FlutterSetupAssistant-macOS.zip"
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --generate-notes
+          gh release upload "$GITHUB_REF_NAME" FlutterSetupAssistant-macOS.zip --clobber
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FlutterSetupAssistant-macOS
+          path: FlutterSetupAssistant-macOS.zip
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter build windows --release
+      - name: Zip app folder
+        run: Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath FlutterSetupAssistant-Windows.zip
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$env:GITHUB_REF_NAME" 2>$null; if ($LASTEXITCODE -ne 0) { gh release create "$env:GITHUB_REF_NAME" --generate-notes }
+          gh release upload "$env:GITHUB_REF_NAME" FlutterSetupAssistant-Windows.zip --clobber
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FlutterSetupAssistant-Windows
+          path: FlutterSetupAssistant-Windows.zip
