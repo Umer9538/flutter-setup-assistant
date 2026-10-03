@@ -4,6 +4,10 @@ A desktop app for macOS and Windows that takes a fresh computer to a fully
 working Flutter development environment: scan, plan, install, configure,
 diagnose, repair. No tutorials, no manual PATH edits.
 
+**Download:** https://github.com/Umer9538/flutter-setup-assistant/releases/latest
+
+**New here? Read the [User Guide](GUIDE.md)** for step-by-step instructions, including how to open the app the first time on macOS and Windows.
+
 ## What it installs and configures
 
 | Component | macOS | Windows | Notes |
