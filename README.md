@@ -8,6 +8,16 @@ diagnose, repair. No tutorials, no manual PATH edits.
 
 **New here? Read the [User Guide](GUIDE.md)** for step-by-step instructions, including how to open the app the first time on macOS and Windows.
 
+## Screenshots
+
+| Scan | Plan |
+|---|---|
+| ![Scan results](docs/screenshots/2-scan.png) | ![The plan](docs/screenshots/3-plan.png) |
+
+| Install | Diagnose |
+|---|---|
+| ![Installation](docs/screenshots/4-install.png) | ![Diagnosis with one-click fixes](docs/screenshots/5-doctor.png) |
+
 ## What it installs and configures
 
 | Component | macOS | Windows | Notes |
