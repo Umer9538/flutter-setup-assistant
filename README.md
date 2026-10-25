@@ -92,3 +92,7 @@ The macOS target has App Sandbox disabled (see `macos/Runner/*.entitlements`)
 because the app must write to `/Applications`, mount disk images and run
 installers. For distribution outside the App Store, sign and notarize with a
 Developer ID certificate.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
